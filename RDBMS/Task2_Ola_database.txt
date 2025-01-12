@@ -1,0 +1,145 @@
+                          Internship Task - RDBMS and SQL Task #2 Ola(a ride-hailing service)                         
+-- Create Drivers Table
+CREATE TABLE Drivers (
+    Driver_id INT PRIMARY KEY,
+    First_Name VARCHAR(100),
+    Last_Name VARCHAR(100),
+    Phone VARCHAR(20),
+    City VARCHAR(100),
+    VehicleType VARCHAR(50),
+    Rating DECIMAL(2, 1)
+);
+
+-- Create Riders Table
+CREATE TABLE Riders (
+    Rider_ID INT PRIMARY KEY,
+    First_Name VARCHAR(100),
+    Last_Name VARCHAR(100),
+    Phone VARCHAR(20),
+    City VARCHAR(100),
+    Join_Date DATE
+);
+
+-- Create Rides Table
+CREATE TABLE Rides (
+    Ride_ID INT PRIMARY KEY,
+    Rider_ID INT,
+    Driver_ID INT,
+    Ride_Date DATE,
+    Pickup_Location VARCHAR(200),
+    Drop_Location VARCHAR(200),
+    Distance DECIMAL(5, 2),
+    Fare DECIMAL(10, 2),
+    Ride_Status VARCHAR(20),
+    FOREIGN KEY (Rider_ID) REFERENCES Riders(Rider_ID),
+    FOREIGN KEY (Driver_ID) REFERENCES Drivers(Driver_ID)
+);
+
+-- Create Payments Table
+CREATE TABLE Payments (
+    Payment_ID INT PRIMARY KEY,
+    Ride_ID INT,
+    Payment_Method VARCHAR(50),
+    Amount DECIMAL(10, 2),
+    Payment_Date DATE,
+    FOREIGN KEY (Ride_ID) REFERENCES Rides(Ride_ID)
+);
+====================================================================================================================
+-- Insert data into Drivers Table
+INSERT INTO Drivers (Driver_ID, First_Name, Last_Name, Phone, City, VehicleType, Rating) VALUES
+(1, 'John', 'Doe', '123-456-7890', 'Mumbai', 'Sedan', 4.8),
+(2, 'Alice', 'Smith', '987-654-3210', 'Delhi', 'Hatchback', 4.5),
+(3, 'Bob', 'Johnson', '456-789-1234', 'Bangalore', 'SUV', 4.7);
+
+-- Insert data into Riders Table
+INSERT INTO Riders (Rider_ID, First_Name, Last_Name, Phone, City, Join_Date) VALUES
+(1, 'Charlie', 'Brown', '111-222-3333', 'Mumbai', '2023-01-15'),
+(2, 'Emily', 'Clark', '222-333-4444', 'Delhi', '2022-12-10'),
+(3, 'David', 'Williams', '333-444-5555', 'Bangalore', '2023-02-01');
+
+-- Insert data into Rides Table
+INSERT INTO Rides (Ride_ID, Rider_ID, Driver_ID, Ride_Date, Pickup_Location, Drop_Location, Distance, Fare, RideStatus) VALUES
+(1, 1, 1, '2023-03-01', 'Andheri', 'Bandra', 12.5, 350.00, 'Completed'),
+(2, 2, 2, '2023-03-02', 'Connaught Place', 'India Gate', 8.2, 250.00, 'Completed'),
+(3, 3, 3, '2023-03-03', 'Electronic City', 'Whitefield', 15.0, 500.00, 'Ongoing');
+
+-- Insert data into Payments Table
+INSERT INTO Payments (Payment_ID, Ride_ID, Payment_Method, Amount, Paymen_tDate) VALUES
+(1, 1, 'Card', 350.00, '2023-03-01'),
+(2, 2, 'Cash', 250.00, '2023-03-02'),
+(3, 3, 'Wallet', 500.00, '2023-03-03');
+=====================================================================================================================
+--Query 1. Retrieve the names and contact details of all drivers with a rating of 4.5 or higher
+
+SELECT first_Name, last_name, Phone, city
+FROM drivers
+WHERE Rating >= 4.5;
+
+
+--Query 2. Find the total number of rides completed by each driver
+
+SELECT Driver_id, COUNT(*) AS TotalRides
+FROM Rides
+WHERE Ride_Status = 'Completed'
+GROUP BY Driver_id;
+
+
+--Query 3. List all riders who have never booked a ride
+SELECT 
+    Riders.Rider_ID,
+    Riders.First_Name,
+    Riders.Last_Name,
+    Riders.Phone,
+    Riders.City,
+    Riders.Join_Date
+FROM Riders
+LEFT JOIN Rides ON Riders.Rider_ID = Rides.Rider_ID
+WHERE Rides.Ride_ID IS NULL;
+
+--Query 4. Calculate the total earnings of each driver from completed rides.
+
+SELECT Drivers.Driver_id, Drivers.first_name, Drivers.last_name, SUM(Rides.Fare) AS TotalEarnings FROM Rides INNER JOIN Drivers ON Rides.Driver_id = Drivers.Driver_id WHERE Rides.Ride_Status = 'Completed' GROUP BY Drivers.Driver_id, Drivers.first_name, Drivers.last_name;
+
+
+
+--Query 5. Retrieve the most recent ride for each rider.
+
+SELECT Rider_id, MAX(Ride_date) AS MostRecentRide
+FROM Rides
+GROUP BY Rider_id;
+
+--Query 6. Count the number of rides taken in each city
+
+SELECT Riders.City, COUNT(Rides.Ride_id) AS TotalRides
+FROM Rides
+INNER JOIN Riders ON Rides.Rider_id = Riders.Rider_id
+GROUP BY Riders.City;
+
+
+--Query 7. List all rides where the distance was greater than 20 km
+
+SELECT *
+FROM Rides
+WHERE Distance > 20;
+
+--Query 8. Identify the most preferred payment method
+
+SELECT Payment_Method, COUNT(*) AS UsageCount
+ FROM Payment GROUP BY Payment_Method ORDER BY UsageCount DESC LIMIT 1;
+
+
+--Query 9. Find the top 3 highest-earning drivers.
+
+SELECT Drivers.Driver_id, Drivers.first_name, Drivers.last_name, SUM(Rides.Fare) AS TotalEarnings
+FROM Rides
+INNER JOIN Drivers ON Rides.Driver_ID = Drivers.Driver_ID
+WHERE Rides.Ride_Status = 'Completed'
+GROUP BY Drivers.Driver_ID, Drivers.First_Name, Drivers.Last_Name
+ORDER BY TotalEarnings DESC
+LIMIT 3;
+
+ --Query 10. Retrieve details of all cancelled rides along with the rider's and driver's names
+
+SELECT Rides.Ride_ID, Rides.Ride_date, Rides.Pickup_Location, Rides.Drop_Location, Riders.First_Name AS RiderFirstName, Riders.Last_Name AS Rider_LastName, Drivers.First_Name AS DriverFirstName, Drivers.Last_Name AS DriverLastName FROM Rides INNER JOIN Riders ON Rides.Rider_ID = Riders.Rider_ID INNER JOIN Drivers ON Rides.Driver_ID = Drivers.Driver_ID WHERE Rides.Ride_Status = 'Cancelled';
+
+

@@ -1,0 +1,160 @@
+                                Internship Task - RDBMS and SQL Task #4(HR_Management_Application)
+
+table creation :
+
+-- Create Departments table
+CREATE TABLE Departments (
+    DepartmentID INT PRIMARY KEY AUTO_INCREMENT,
+    DepartmentName VARCHAR(100) NOT NULL,
+    ManagerID INT
+);
+
+-- Create Employees table
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY AUTO_INCREMENT,
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    Phone VARCHAR(15),
+    HireDate DATE NOT NULL,
+    DepartmentID INT,
+    ManagerID INT,
+    Salary DECIMAL(10, 2),
+    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID),
+    FOREIGN KEY (ManagerID) REFERENCES Employees(EmployeeID)
+);
+
+
+
+-- Create PerformanceReviews table
+CREATE TABLE PerformanceReviews (
+    ReviewID INT PRIMARY KEY AUTO_INCREMENT,
+    EmployeeID INT NOT NULL,
+    ReviewDate DATE NOT NULL,
+    PerformanceScore ENUM('Excellent', 'Good', 'Average', 'Poor') NOT NULL,
+    Comments TEXT,
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
+);
+
+-- Create Payroll table
+CREATE TABLE Payroll (
+    PayrollID INT PRIMARY KEY AUTO_INCREMENT,
+    EmployeeID INT NOT NULL,
+    PaymentDate DATE NOT NULL,
+    Amount DECIMAL(10, 2) NOT NULL,
+    PaymentMethod ENUM('Bank Transfer', 'Check') NOT NULL,
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
+);
+=====================================================================================================================
+-- Insert data into Departments table
+INSERT INTO Departments (DepartmentName, ManagerID) VALUES
+('Human Resources', NULL),
+('IT', NULL),
+('Finance', NULL),
+('Marketing', NULL),
+('Operations', NULL);
+
+-- Insert data into Employees table
+INSERT INTO Employees (FirstName, LastName, Email, Phone, HireDate, DepartmentID, ManagerID, Salary) VALUES
+('Alice', 'Brown', 'alice.brown@example.com', '123-456-7890', '2020-01-15', 1, NULL, 50000.00),
+('Bob', 'Smith', 'bob.smith@example.com', '234-567-8901', '2019-06-01', 2, NULL, 60000.00),
+('Charlie', 'Johnson', 'charlie.johnson@example.com', '345-678-9012', '2021-03-20', 3, NULL, 55000.00),
+('Diana', 'Clark', 'diana.clark@example.com', '456-789-0123', '2018-11-05', 4, 1, 70000.00),
+('Evan', 'Davis', 'evan.davis@example.com', '567-890-1234', '2022-07-10', 5, 2, 45000.00);
+
+-- Insert data into PerformanceReviews table
+INSERT INTO PerformanceReviews (EmployeeID, ReviewDate, PerformanceScore, Comments) VALUES
+(1, '2023-01-15', 'Excellent', 'Outstanding contribution to the team.'),
+(2, '2023-01-20', 'Good', 'Consistently meets expectations.'),
+(3, '2023-02-05', 'Average', 'Room for improvement in technical skills.'),
+(4, '2023-02-10', 'Excellent', 'Exceptional leadership qualities.'),
+(5, '2023-02-15', 'Good', 'Performed well under tight deadlines.');
+
+-- Insert data into Payroll table
+INSERT INTO Payroll (EmployeeID, PaymentDate, Amount, PaymentMethod) VALUES
+(1, '2023-01-31', 5000.00, 'Bank Transfer'),
+(2, '2023-01-31', 6000.00, 'Check'),
+(3, '2023-01-31', 5500.00, 'Bank Transfer'),
+(4, '2023-01-31', 7000.00, 'Check'),
+(5, '2023-01-31', 4500.00, 'Bank Transfer');
+
+
+
+
+Assignment Queries
+
+--Query 1. Retrieve the names and contact details of employees hired after January 1, 2023
+
+
+SELECT FirstName, LastName, Email, Phone 
+FROM Employees 
+WHERE HireDate > '2023-01-01';
+
+
+--Query2. Find the total payroll amount paid to each department
+SELECT d.DepartmentName, SUM(p.Amount) AS TotalPayroll 
+FROM Payroll p
+JOIN Employees e ON p.EmployeeID = e.EmployeeID
+JOIN Departments d ON e.DepartmentID = d.DepartmentID
+GROUP BY d.DepartmentName;
+
+--Query 3.List all employees who have not been assigned a manager
+
+SELECT FirstName, LastName 
+FROM Employees 
+WHERE ManagerID IS NULL;
+
+--Query 4.Retrieve the highest salary in each department along with the employee’s name
+SELECT d.DepartmentName, e.FirstName, e.LastName, e.Salary 
+FROM Employees e
+JOIN Departments d ON e.DepartmentID = d.DepartmentID
+WHERE e.Salary = (
+    SELECT MAX(Salary) 
+    FROM Employees e2 
+    WHERE e2.DepartmentID = e.DepartmentID
+);
+
+--Query 5. Find the most recent performance review for each employee
+SELECT e.FirstName, e.LastName, pr.ReviewDate, pr.PerformanceScore, pr.Comments 
+FROM Employees e
+JOIN PerformanceReviews pr ON e.EmployeeID = pr.EmployeeID
+WHERE pr.ReviewDate = (
+    SELECT MAX(ReviewDate) 
+    FROM PerformanceReviews pr2 
+    WHERE pr2.EmployeeID = pr.EmployeeID
+);
+
+--Query 6. Count the number of employees in each department
+
+SELECT d.DepartmentName, COUNT(e.EmployeeID) AS EmployeeCount 
+FROM Departments d
+LEFT JOIN Employees e ON d.DepartmentID = e.DepartmentID
+GROUP BY d.DepartmentName;
+
+--Query 7. List all employees who have received a performance score of "Excellent." Identify the
+most frequently used payment method in payroll
+
+SELECT e.FirstName, e.LastName 
+FROM Employees e
+JOIN PerformanceReviews pr ON e.EmployeeID = pr.EmployeeID
+WHERE pr.PerformanceScore = 'Excellent';
+
+--Query 8. Retrieve the top 5 highest-paid employees along with their departments
+SELECT PaymentMethod, COUNT(*) AS UsageCount 
+FROM Payroll 
+GROUP BY PaymentMethod 
+ORDER BY UsageCount DESC 
+LIMIT 1;
+
+--Query 9.
+
+SELECT e.FirstName, e.LastName, e.Salary, d.DepartmentName 
+FROM Employees e
+JOIN Departments d ON e.DepartmentID = d.DepartmentID
+ORDER BY e.Salary DESC 
+LIMIT 5;
+--Query 10.
+
+SELECT EmployeeID, FirstName, LastName, Email, Phone, DepartmentID, Salary 
+FROM Employees 
+WHERE ManagerID = 101;
