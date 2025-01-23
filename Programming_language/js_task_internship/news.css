@@ -1,0 +1,69 @@
+/* Title  */
+h2 {
+    text-align: center;
+    color:crimson;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 39px;
+}
+
+h3{
+    color: blue;
+}
+
+/* Input fields  */
+input {
+    width: 100%;
+    margin-bottom: 20px;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+/* Article container  */
+#artical {
+    padding-bottom: 30px;
+
+}
+
+/* Input fields ke beech mein  */
+.inputt, .artical, .images-url {
+    margin-bottom: 10px;
+
+}
+
+/* Article card image */
+.userartical-card img {
+    width: 300px;
+    height: 200px;
+}
+
+/* User article container */
+#userartical {
+    height: auto;
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px; 
+}
+
+/* Articles ko horizontally align karne ke liye */
+.userartical-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid #ccc;
+    padding: 15px;
+    width: 400px; 
+}
+/* Image ka size */
+.userartical-card img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Title and description  */
+.userartical-card h3, .userartical-card p {
+    margin: 10px;
+}
+.container{
+	border: 2px solid rgb(0, 0, 0);
+}

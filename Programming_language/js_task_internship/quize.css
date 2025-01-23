@@ -1,0 +1,59 @@
+.man{
+	height: 400px;
+	width: 1000px;
+	background-color: rgb(160, 184, 229);
+	margin-left: 80px;
+	border-radius:20px;
+	box-shadow: 0.8px 0.6px 1px 2px; 
+	margin-top: 60px;
+}
+
+	
+
+.btan{
+   
+	text-align: center;
+	padding-top: 200px;
+	}
+
+	.rules{
+		height: 300px;
+		width: 450px;
+		margin-left: 200px;
+		margin-top: 30px;
+		padding-left: 10px;
+		background-color: white;
+		border-radius: 8px;
+		box-shadow: 17px;
+		font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+	}
+	.button{
+		margin-left: 22 0px;
+		margin-top: -20px;
+	}
+
+	/* index2 css */
+	.quebox{
+		height: 300px;
+		width: 700px;
+		background-color: cadetblue;
+		margin-top: 140px;
+		margin-left: 210px;
+		padding-left: 20px;
+		padding-top: 30px;
+	}
+	#que2{
+         display: none;
+	}
+	#que3{
+		display: none;
+   }
+   #que4{
+	display: none;
+}
+#que5{
+	display: none;
+}
+
+	

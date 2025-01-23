@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Quiz</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="quize.css">
+
+</head>
+
+<body>
+
+  <div class="container">
+    <div>
+      <div class="quebox">
+        <div id="que1">
+          <h5> que 1:- What are the two main parts, available in html document?</h5>
+          <input type="radio" name="1" value="A"> A.Head and Body<br>
+          <input type="radio" name="1" value="B"> B.Head and title <br>
+          <input type="radio" name="1" value="C"> C.Title and Body<br>
+          <input type="radio" name="1" value="D"> D.Head and document<br>
+        </div>
+        <div id="que2">
+          <h5> que 2:- Which option will match, while making bulleted list?</h5>
+          <input type="radio" name="2" value="A"> A. Square, disc, polygon<br>
+          <input type="radio" name="2" value="B"> B.disc, circle, square<br>
+          <input type="radio" name="2" value="C"> C. triangle, disc, circle<br>
+          <input type="radio" name="2" value="D"> D.triangle, square, circle<br>
+        </div>
+        <div id="que3">
+          <h5> que 3:- What is the meaning of increase the cell padding?</h5>
+          <input type="radio" name="3" value="A"> A. Increase the thickness of table border<br>
+          <input type="radio" name="3" value="B"> B. Increase the space between cells<br>
+          <input type="radio" name="3" value="C"> C. Increase the distance between cell and content<br>
+          <input type="radio" name="3" value="D"> D. Increase the no of cells<br>
+        </div>
+        <div id="que4">
+          <h5> que 4:- Which property of cells will how many rows a cell should span?</h5>
+          <input type="radio" name="4" value="A"> A. Colspan = 5<br>
+          <input type="radio" name="4" value="B"> B. Span = 5<br>
+          <input type="radio" name="4" value="C"> C. Cellspan = 5 <br>
+          <input type="radio" name="4" value="D"> D. Rowspan = 5 <br>
+        </div>
+        <div id="que5">
+          <h5> que 5:- A controls ______ is given by its name attribute.</h5>
+          <input type="radio" name="5" value="A"> A. Control name<br>
+          <input type="radio" name="5" value="B"> B. Area<br>
+          <input type="radio" name="5" value="C"> C. Sphere<br>
+          <input type="radio" name="5" value="D"> D. Quotation<br>
+        </div><br>
+        <div class="btn1">
+            <a href="http://127.0.0.1:5500/quize1.html">
+
+          <button type="button" class="btn btn-primary">Reset</button></a>
+          <button type="button" class=" btn btn-primary" id="Continue" onclick="main()">Continue</button>
+          <p id="result"></p>
+        </div>
+      </div>
+
+<script src="index.js"></script>
+</body>
+
+</html>
